@@ -2,7 +2,7 @@
 
 A comprehensive cloud-based video management system for law enforcement featuring real-time analytics, IoT integration, and intelligent threat detection.
 
-![CVMS Dashboard](screenshots/dashboard.png)
+https://video-grid-monitor--hikaruito78.replit.app
 
 ## Overview
 
