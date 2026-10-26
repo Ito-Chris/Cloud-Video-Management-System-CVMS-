@@ -7,6 +7,7 @@ import Analytics from "./pages/Analytics";
 import IoT from "./pages/IoT";
 import EvidencePage from "./pages/Evidence";
 import Officers from "./pages/Officers";
+import DashcamSafety from "./pages/DashcamSafety";
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
           <Route path="/incidents" component={Incidents} />
           <Route path="/analytics" component={Analytics} />
           <Route path="/iot" component={IoT} />
+          <Route path="/road-safety" component={DashcamSafety} />
           <Route path="/evidence" component={EvidencePage} />
           <Route path="/officers" component={Officers} />
         </Switch>

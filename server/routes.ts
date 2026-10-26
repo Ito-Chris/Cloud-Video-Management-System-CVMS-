@@ -7,11 +7,14 @@ import {
   evidence,
   trafficLights,
   sensors,
+  dashcamSafetyReports,
   getDashboardStats,
   getAnalytics,
   resolveEvent,
   createIncident,
   updateIncidentStatus,
+  createDashcamSafetyReport,
+  updateDashcamSafetyReportStatus,
 } from "./storage.js";
 
 const router = Router();
@@ -93,5 +96,43 @@ router.patch("/traffic-lights/:id/mode", (req, res) => {
 
 // Environmental sensors
 router.get("/sensors", (_req, res) => res.json(sensors));
+
+// Dashcam safety reports are operator-entered; this API does not ingest video.
+router.get("/dashcam-safety-reports", (_req, res) => res.json(dashcamSafetyReports));
+router.post("/dashcam-safety-reports", (req, res) => {
+  const { unitId, eventType, severity, location, details } = req.body ?? {};
+  const eventTypes = ["road_hazard", "collision", "near_miss", "vehicle_disabled"];
+  const severities = ["low", "medium", "high", "critical"];
+  const values = [unitId, location, details];
+
+  if (
+    values.some((value) => typeof value !== "string" || value.trim().length === 0) ||
+    unitId.trim().length > 40 ||
+    location.trim().length > 160 ||
+    details.trim().length > 1000 ||
+    !eventTypes.includes(eventType) ||
+    !severities.includes(severity)
+  ) {
+    return res.status(400).json({ error: "Enter a valid unit, event type, severity, location, and report." });
+  }
+
+  const report = createDashcamSafetyReport({
+    unitId: unitId.trim(),
+    eventType,
+    severity,
+    location: location.trim(),
+    details: details.trim(),
+  });
+  res.status(201).json(report);
+});
+router.patch("/dashcam-safety-reports/:id/status", (req, res) => {
+  const { status } = req.body ?? {};
+  if (status !== "acknowledged" && status !== "closed") {
+    return res.status(400).json({ error: "Status must be acknowledged or closed." });
+  }
+  const ok = updateDashcamSafetyReportStatus(Number(req.params.id), status);
+  if (!ok) return res.status(404).json({ error: "Dashcam safety report not found." });
+  res.json({ success: true });
+});
 
 export default router;

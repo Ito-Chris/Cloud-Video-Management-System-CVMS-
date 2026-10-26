@@ -8,6 +8,7 @@ import type {
   EnvironmentalSensor,
   DashboardStats,
   AnalyticsData,
+  DashcamSafetyReport,
 } from "../shared/schema.js";
 
 // ─── Seed Data ────────────────────────────────────────────────────────────────
@@ -82,6 +83,39 @@ export let sensors: EnvironmentalSensor[] = [
   { id: 8, name: "TEMP-Depot", location: "Evidence Depot", type: "temperature", value: 18.1, unit: "°C", status: "normal", lastUpdated: new Date().toISOString() },
 ];
 
+export let dashcamSafetyReports: DashcamSafetyReport[] = [
+  {
+    id: 1,
+    unitId: "UNIT-12",
+    eventType: "road_hazard",
+    severity: "high",
+    location: "A40 westbound, exit 8",
+    details: "Large object reported in the left lane.",
+    status: "new",
+    reportedAt: new Date(Date.now() - 4 * 60000).toISOString(),
+  },
+  {
+    id: 2,
+    unitId: "UNIT-07",
+    eventType: "near_miss",
+    severity: "medium",
+    location: "North Bridge / King Street",
+    details: "Hard braking after a vehicle entered the junction.",
+    status: "acknowledged",
+    reportedAt: new Date(Date.now() - 19 * 60000).toISOString(),
+  },
+  {
+    id: 3,
+    unitId: "UNIT-03",
+    eventType: "collision",
+    severity: "critical",
+    location: "Riverside Road, southbound",
+    details: "Two-vehicle collision reported; emergency services requested.",
+    status: "closed",
+    reportedAt: new Date(Date.now() - 72 * 60000).toISOString(),
+  },
+];
+
 // ─── Stats & Analytics ────────────────────────────────────────────────────────
 
 export function getDashboardStats(): DashboardStats {
@@ -143,6 +177,7 @@ export function getAnalytics(): AnalyticsData {
 
 let nextEventId = events.length + 1;
 let nextIncidentId = incidents.length + 1;
+let nextDashcamSafetyReportId = dashcamSafetyReports.length + 1;
 
 export function addEvent(ev: Omit<DetectionEvent, "id">): DetectionEvent {
   const event = { ...ev, id: nextEventId++ };
@@ -169,6 +204,29 @@ export function updateIncidentStatus(id: number, status: Incident["status"]): bo
   if (!inc) return false;
   inc.status = status;
   inc.updatedAt = new Date().toISOString();
+  return true;
+}
+
+export function createDashcamSafetyReport(
+  data: Omit<DashcamSafetyReport, "id" | "reportedAt" | "status">,
+): DashcamSafetyReport {
+  const report: DashcamSafetyReport = {
+    ...data,
+    id: nextDashcamSafetyReportId++,
+    status: "new",
+    reportedAt: new Date().toISOString(),
+  };
+  dashcamSafetyReports = [report, ...dashcamSafetyReports];
+  return report;
+}
+
+export function updateDashcamSafetyReportStatus(
+  id: number,
+  status: DashcamSafetyReport["status"],
+): boolean {
+  const report = dashcamSafetyReports.find((item) => item.id === id);
+  if (!report) return false;
+  report.status = status;
   return true;
 }
 

@@ -28,7 +28,7 @@ The **Start CVMS** workflow handles everything automatically.
 ```
 ├── client/src/
 │   ├── components/       # Reusable UI (Sidebar, AlertFeed, CameraCard, …)
-│   ├── pages/            # Dashboard, Cameras, Incidents, Analytics, IoT, Evidence, Officers
+│   ├── pages/            # Dashboard, Cameras, Incidents, Analytics, IoT, Dashcam Safety, Evidence, Officers
 │   ├── lib/              # api.ts (fetch wrapper), utils.ts (formatters, colour maps)
 │   └── index.css         # Tailwind base styles
 ├── server/
@@ -47,8 +47,11 @@ The **Start CVMS** workflow handles everything automatically.
 - **Incidents** — Create, track, and advance incidents through workflow states
 - **Analytics** — Events over time, severity breakdown, ANPR log, gender demographics
 - **IoT / Traffic** — Smart traffic signal control + environmental sensor monitoring
+- **Dashcam Safety** — Operator-entered road hazard, collision, near-miss, and disabled-vehicle reports with acknowledgement and closure
 - **Evidence** — Chain-of-custody evidence tracking with SHA-256 hashes
 - **Officers** — Personnel registry with status and contact info
+
+Dashcam Safety is a manual-report demo only. It does not connect to dashcam streams or perform video/AI analysis; reports are stored in memory and reset when the server restarts.
 
 ## Live Data Simulation
 

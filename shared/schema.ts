@@ -111,6 +111,20 @@ export interface EnvironmentalSensor {
   lastUpdated: string;
 }
 
+export type RoadSafetyEventType = "road_hazard" | "collision" | "near_miss" | "vehicle_disabled";
+export type RoadSafetyReportStatus = "new" | "acknowledged" | "closed";
+
+export interface DashcamSafetyReport {
+  id: number;
+  unitId: string;
+  eventType: RoadSafetyEventType;
+  severity: Severity;
+  location: string;
+  details: string;
+  status: RoadSafetyReportStatus;
+  reportedAt: string;
+}
+
 export interface DashboardStats {
   totalCameras: number;
   onlineCameras: number;
