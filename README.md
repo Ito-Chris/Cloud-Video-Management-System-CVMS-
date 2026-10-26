@@ -2,7 +2,7 @@
 
 A comprehensive cloud-based video management system for law enforcement featuring real-time analytics, IoT integration, and intelligent threat detection.
 
-https://video-grid-monitor--hikaruito78.replit.app
+https://4d32fb02-1a62-4a6e-94d6-65ce039d9ef5-00-1nwrvi7aaiqsg.pike.replit.dev/ 
 
 ## Overview
 
